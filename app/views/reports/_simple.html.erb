@@ -1,0 +1,97 @@
+<% if @statuses.empty? or rows.empty? %>
+    <p><i><%=l(:label_no_data)%></i></p>
+<% else %>
+    <table class="list issue-report">
+      <thead><tr>
+        <th></th>
+        <th style="width:3%"></th>
+        <th style="width:7%">程序</th>
+        <th style="width:7%">策划</th>
+        <th style="width:7%">待验证</th>
+        <th style="width:7%">观望</th>
+        <th style="width:7%">搁置</th>
+        <th style="width:2px"></th>
+        <th style="width:8%"><%=l(:label_open_issues_plural)%></th>
+        <th style="width:8%"><%=l(:label_closed_issues_plural)%></th>
+        <th style="width:8%"><%=l(:label_total)%></th>
+      </tr></thead>
+      <tbody>
+      <%
+        passnum = 0
+        nopassnum = 0
+        aa = 0
+        bb = 0
+        cc = 0
+        hh = 0
+        dd = 0
+        ee = 0
+        ff = 0
+        gg = 0
+        users1 = ["21", "3", "4", "29", "43", "67", "68"]
+         users2 = ["22", "9", "11", "15", "26", "59"]
+      %>
+      <% for row in rows %>
+          <tr class="<%= cycle("odd", "even") %>">
+            <% a = 0
+               b = 0
+               data.each { |rowa|
+                 if rowa[field_name].to_s == row.id.to_s && (rowa["status_id"].to_s == 1.to_s || rowa["status_id"].to_s == 2.to_s)
+                   if (users1.include?(rowa["row_assigned_to_id"].to_s))
+                     a = a + rowa["total"].to_i
+                   end
+                   if (users2.include?(rowa["row_assigned_to_id"].to_s))
+                     b = b + rowa["total"].to_i
+                   end
+                 end
+               } unless data.nil?
+               c = aggregate data, { field_name => row.id, "status_id" => 3 }
+               h1 = aggregate data, { field_name => row.id, "status_id" => 9 }
+               d = aggregate data, { field_name => row.id, "status_id" => 4 }
+               e = aggregate data, { field_name => row.id, "closed" => 0 }
+               f = aggregate data, { field_name => row.id, "closed" => 1 }
+               g = aggregate data, { field_name => row.id }
+               isRight = a + b + c + h1 + d == e
+               rightColor = isRight ? '' : " style=font-weight:bold;font-size:15px"
+               isPass = e == 0
+               passColor = isPass ? ' style=font-weight:bold;font-size:15px;color:#00FF19' : " style=font-weight:bold;font-size:15px;color:#FF0000"
+               isPass ? (passnum = passnum + 1) : (nopassnum = nopassnum + 1)
+               aa = aa + a
+               bb = bb + b
+               cc = cc + c
+               hh = hh + h1
+               dd = dd + d
+               ee = ee + e
+               ff = ff + f
+               gg = gg + g
+
+            %>
+            <td class="name"><%= link_to h(row.name), aggregate_path(@project, field_name, row) %></td>
+            <td<%= passColor%>><%= isPass ? '√' : '×' %></td>
+            <td><%= a > 0 ? link_to(h(a), aggregate_path(@project, field_name, row, { :assigned_to_id => users1 * "|",  :status_id => "1|2", :tracker_id => "1" })) : '-' %></td>
+            <td><%= b > 0 ? link_to(h(b), aggregate_path(@project, field_name, row, { :assigned_to_id => users2 * "|",  :status_id => "1|2", :tracker_id => "1" })) : '-' %></td>
+            <td><%= aggregate_link data, { field_name => row.id, "status_id" => 3 }, aggregate_path(@project, field_name, row, { :status_id => 3, :tracker_id => "1" }) %></td>
+            <td><%= aggregate_link data, { field_name => row.id, "status_id" => 9 }, aggregate_path(@project, field_name, row, { :status_id => 9, :tracker_id => "1" }) %></td>
+            <td><%= aggregate_link data, { field_name => row.id, "status_id" => 4 }, aggregate_path(@project, field_name, row, { :status_id => 4, :tracker_id => "1" }) %></td>
+            <td style="width:2px"></td>
+            <td<%= rightColor%>><%= aggregate_link data, { field_name => row.id, "closed" => 0 }, aggregate_path(@project, field_name, row, { :status_id => "o", :tracker_id => "1" }) %></td>
+            <td><%= aggregate_link data, { field_name => row.id, "closed" => 1 }, aggregate_path(@project, field_name, row, { :status_id => "c", :tracker_id => "1" }) %></td>
+            <td><%= aggregate_link data, { field_name => row.id }, aggregate_path(@project, field_name, row, { :status_id => "*", :tracker_id => "1" }) %></td>
+          </tr>
+      <% end %>
+      <thead><tr >
+        <th>总计（通过列表示：未通过总数）</th>
+        <th style="width:3%;font-weight:bold;font-size:15px;color:#ffc438"><%= (nopassnum.to_s) %></th>
+        <th style="width:7%"><%= aa%></th>
+        <th style="width:7%"><%= bb%></th>
+        <th style="width:7%"><%= cc%></th>
+        <th style="width:7%"><%= hh%></th>
+        <th style="width:7%"><%= dd%></th>
+        <th style="width:2px"></th>
+        <th style="width:8%"><%= ee%></th>
+        <th style="width:8%"><%= ff%></th>
+        <th style="width:8%"><%= gg%></th>
+      </tr></thead>
+      </tbody>
+      </table>
+<% end
+   reset_cycle %>
