@@ -1,0 +1,1 @@
+bundle exec rake db:migrate_plugins RAILS_ENV=production
