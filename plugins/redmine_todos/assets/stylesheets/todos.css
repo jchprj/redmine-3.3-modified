@@ -1,0 +1,357 @@
+.indicator {
+  width: 31px;
+  display: inline-block;
+  text-indent: -10000px;
+  background: url("data:image/gif;base64,R0lGODlhEAALAPQAADrn9QAAADHG0i+9yDXU4QEFBQAAAAopLB12fRVXXCqpswceIBBDRx99hRZaYCustwgiJAADAxFGSzTR3THE0Dfd6wwyNjLI1Dfc6SmlrySRmi63wjbY5QAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA") center center no-repeat #ffffff !important;
+}
+.ui-sortable-placeholder {
+  background: #ddd;
+  visibility: visible;
+}
+textarea.newEntry {
+  width: 60%;
+  height: 1.1em;
+  resize: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px dashed #ccc;
+  overflow: hidden;
+  font-family: "Lucida Grande", verdana, arial, helvetica, sans-serif;
+}
+todo-resource-edit-form textarea {
+  position: relative;
+  left: -2px;
+}
+todo-resource-edit-form .withCheckbox footer {
+  padding-left: 19px;
+}
+.pill {
+  position: relative;
+  display: inline-block;
+}
+.pill > .details > span {
+  border: 1px solid #bbb;
+  border-radius: 15px;
+  padding: 1px 5px;
+  font-size: 10px;
+  text-align: center;
+  color: #777;
+  cursor: pointer;
+}
+.pill > .details.hasData > span {
+  background: #eee;
+  border: 1px solid #eee;
+}
+.pill > .details:hover > span {
+  border: 1px solid #ddd;
+  background: #ddd;
+}
+.pill > .details.active > span {
+  border: 1px solid #000;
+  background: #000;
+  color: #FFF;
+}
+.padlock {
+  display: inline-block;
+  width: 12px;
+  height: 14px;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAYAAAAiYZ4HAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsNCjQ2nsmvJQAAANpJREFUKM/l0C9OA0EUgPHfbCZdxQ0gIDAco0A24yrQJAjuwCG4AgYBCoIhZLIl9BQoDAaBRk3YtJjdZEOKqOYzT7z3vX/BiCalfVzgFAHXuGxzfoNY10Ksa10pmpSO8IAtPOEbM3zhpM15ru+iSWmCV+zirBdXOMY93nHQ5ryM/TYz7OGuzfk21jXoSnlsUrrCOQ7xXPXCNiLmfaGulOG0G0ywA4MQ+rgajltDgNikFEZCB4fTaYSXxaJDGX2xCk1Kq1H3YD1Dbln9HvkHQ66qbMi/FT43qP/4ARNsO4KISkHsAAAAAElFTkSuQmCC");
+  cursor: pointer;
+}
+.padlock.widget {
+  opacity: 0.5;
+}
+.padlock.widget:hover,
+.padlock.widget.active {
+  opacity: 1;
+}
+due-assignee-pill {
+  display: inline-block;
+}
+due-assignee-pill > .pill .form {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  position: absolute;
+  z-index: 100;
+  right: -275px;
+  top: -27.5px;
+  width: 260px;
+  padding: 15px;
+  box-shadow: 0 0 15px #ddd;
+  overflow: visible;
+  background: #FFF;
+}
+due-assignee-pill > .pill .form .pointer {
+  position: absolute;
+  top: 20px;
+  left: -15px;
+  border-right: 16px solid #eeeeee;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+}
+due-assignee-pill > .pill .form .pointer div {
+  position: absolute;
+  top: -15px;
+  left: 1px;
+  border-right: 15px solid #ffffff;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+}
+due-assignee-pill > .pill .form > section > b {
+  display: block;
+  margin-top: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}
+due-assignee-pill > .pill .form > section:first-child b {
+  margin-top: 0;
+}
+due-assignee-pill > .pill .form > section.assignee b {
+  border-bottom: 0;
+}
+due-assignee-pill > .pill .form > section.assignee select {
+  width: 100%;
+  margin-top: 0;
+}
+due-assignee-pill > .pill .form > section.due .nodue {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: underline !important;
+}
+due-assignee-pill > .pill .form > section.isPrivate label {
+  cursor: pointer;
+}
+due-assignee-pill > .pill .form .ui-datepicker-inline {
+  box-shadow: none;
+}
+.controller-todo_list #todos_container {
+  width: 80%;
+  float: left;
+  padding-bottom: 80px;
+}
+.controller-todo_list #todos_container > header {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 0 12px 0;
+  border-bottom: 1px solid #dadada;
+}
+.controller-todo_list #todos_container > header > h3 {
+  display: inline;
+  font-weight: normal;
+}
+.controller-todo_list #todos_container > header .newTodoListForm {
+  float: left;
+  clear: both;
+  width: 100%;
+  max-width: 700px;
+}
+.controller-todo_list #todos_container > header .newTodoListForm > * > article {
+  display: block;
+  margin-top: 49px;
+  padding-bottom: 16px;
+}
+.controller-todo_list #todos_container > header .action.pill {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #FFF;
+  font-size: 11px;
+  padding: 2px 6px;
+  color: #000;
+  box-shadow: 0 0 2px #ccc;
+}
+.controller-todo_list #todos_container > header,
+.controller-todo_list #todos_container > .content {
+  margin-left: 76px;
+}
+.controller-todo_list #todos_container .a-like:hover {
+  text-decoration: underline;
+}
+.controller-todo_list #todos_container ol.todo_lists {
+  padding-left: 60px;
+  margin-top: 20px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li {
+  position: relative;
+  float: left;
+  clear: both;
+  width: 100%;
+  max-width: 700px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.controller-todo_list #todos_container ol.todo_lists > li {
+  margin: 8px 0 0 0;
+  padding: 6px 8px 6px 14px;
+  background: #FFF;
+}
+.controller-todo_list #todos_container ol.todo_lists > li.ui-sortable-helper > header .asideContainer aside,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li.ui-sortable-helper > .asideContainer aside {
+  display: none !important;
+}
+.controller-todo_list #todos_container ol.todo_lists > li .asideContainer {
+  position: absolute;
+  top: 0;
+  left: -100px;
+  width: 100px;
+  height: 1.3em;
+}
+.controller-todo_list #todos_container ol.todo_lists > li .asideContainer aside {
+  display: none;
+  float: right;
+  height: 1.3em;
+  padding: 1px 4px 1px 3px;
+  border: 0;
+  background: #FFF;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  box-shadow: -3px 0 3px #cccccc;
+}
+.controller-todo_list #todos_container ol.todo_lists > li .asideContainer aside .edit {
+  display: inline-block;
+  color: #000;
+  font-size: 11px;
+  line-height: 120%;
+}
+.controller-todo_list #todos_container ol.todo_lists > li .asideContainer aside .edit:hover {
+  color: #005782;
+}
+.controller-todo_list #todos_container ol.todo_lists > li .asideContainer aside .delete {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAADAFBMVEX/AAD39/eMjJzn5+f///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHheS4AAAAAXRSTlMAQObYZgAAAD1JREFUGNONj0kKADAIA03s/99cocYuh2Lm5BBBzbrhNSiah8KnoApUIWonsa9AcAjQgxKebLFSAnkFel9OkK8BERP7k/IAAAAASUVORK5CYII=") 0 0 no-repeat;
+  width: 16px;
+  height: 16px;
+  text-indent: -20000px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header:hover .asideContainer aside,
+.controller-todo_list #todos_container ol.todo_lists > li > header .asideContainer aside.visible {
+  display: block;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header {
+  position: relative;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header h3 {
+  font-size: 16px;
+  color: #005782;
+  text-decoration: underline;
+  z-index: 10;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header h3:active {
+  color: #000;
+  text-decoration: none;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header todo-resource-edit-form textarea {
+  font-weight: bold;
+  font-size: 16px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header todo-resource-edit-form footer span {
+  margin-left: -2px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > header > .asideContainer {
+  top: 2px;
+  left: -105px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list {
+  padding-left: 20px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol.completed {
+  margin-top: 10px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list todo-resource-edit-form textarea {
+  margin-top: 1px;
+  font-size: 13px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list todo-resource-edit-form [type=checkbox] {
+  vertical-align: top;
+  margin-top: 6px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list todo-resource-edit-form footer span {
+  margin-left: 3px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > footer {
+  position: relative;
+  top: -6px;
+  float: left;
+  clear: both;
+  width: 100%;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > footer [type=checkbox] {
+  vertical-align: top;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > footer .a-like.add {
+  display: inline-block;
+  padding: 1px 5px 0 25px;
+  text-decoration: underline;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > footer due-assignee-pill {
+  float: right;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol {
+  min-height: 6px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li .asideContainer aside,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol.completed li,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol.completed li a {
+  color: #999;
+  font-size: 10px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li {
+  margin: 2px 0 0 0;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li:hover > .asideContainer > aside,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li > .asideContainer > aside.visible {
+  display: block;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li:hover > .asideContainer > aside .delete,
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li > .asideContainer > aside.visible .delete {
+  position: relative;
+  top: -3px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li:hover .pill {
+  display: inline-block;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li article [type=submit] {
+  margin-left: 15px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li > span > .todoContents {
+  max-width: 90%;
+  display: inline-block;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li > span > .todoContents > a {
+  color: #000;
+  padding: 3px 0;
+  font-size: 13px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li > span > .todoContents > a:hover {
+  color: #005782;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li due-assignee-pill .pill .empty.details {
+  display: none;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li due-assignee-pill .pill .empty.details.active {
+  display: block;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li:hover due-assignee-pill .pill .empty.details {
+  display: inline-block;
+}
+.controller-todo_list #todos_container ol.todo_lists > li > .todo_list > ol > li:last-child {
+  padding-bottom: 16px;
+}
+.controller-todo_list #todos_container ol.todo_lists > li.ui-sortable-helper {
+  box-shadow: 0 0 5px #bbb;
+  opacity: 0.85;
+}
+.controller-todo_list #todos_container [type=checkbox] {
+  vertical-align: top;
+}
+.controller-todo_list #todos_container .a-like {
+  color: #005782;
+  text-decoration: none;
+  cursor: pointer;
+}

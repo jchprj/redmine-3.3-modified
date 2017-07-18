@@ -1,0 +1,47 @@
+# English strings go here for Rails i18n
+en:
+  project_module_todos_module: "Todos"
+
+  label_todo_plural: Todos
+  label_todo_list_plural: To-do lists
+
+  label_add_todo_list: Add a to-do list
+  label_new_todo_list_input_placeholder: Give your to-do list a title
+  label_save_new_list: Save and start adding to-dos
+  label_or: or
+  label_cancel: Cancel
+
+  label_edit: Edit
+  label_delete: Delete
+  label_save_changes: Save changes
+
+  label_add_a_todo: Add a to-do
+  label_add_this_todo: Add this to-do
+  label_add_new_todo_placeholder: Add a new to-do
+  label_done_adding_todos: I'm done adding to-dos
+
+  label_todo_list_uncompleted_todo_status: Uncompleted todo should be reflected by which issue status?
+  label_todo_list_completed_todo_status:   Completed todo should be reflected by which issue status?
+  label_todos_default_tracker:             Default tracker for each issue created by this plugin
+  error_no_tracker_in_project_or_plugin:   No tracker is associated to this project. Please check the Project settings AND also the plugin settings (admin -> plugins -> redmine to-do lists0
+
+  label_add_first_todo_list: Add your first to-do list!
+  label_configure_plugin:    You have to configure this plugin before using it - go to admin > plugins > To-do lists and choose your preferences!
+
+  label_unassigned: Unassigned
+  label_set_due_date: "Set the due date"
+  label_no_due_date: "No due date"
+  label_assign_this_todo_to: "Assign this to-do to"
+  label_completed_at: "Completed at"
+  label_ajax_error: "Sorry, there was an error while processing your request! Check browser's or webrick's console or server logs for more details."
+  label_insufficient_permissions: "You don't have permissions to perform this action"
+
+  label_make_this_todo_private: "Make this to-do private"
+
+  permission_view_todo_lists: "View todo lists"
+  permission_create_todo_lists: "Create todo lists"
+  permission_update_todo_lists: "Update todo lists"
+  permission_delete_todo_lists: "Delete todo lists"
+  permission_create_todos: "Create todos"
+  permission_update_todos: "Update todos"
+  permission_delete_todos: "Delete todos"

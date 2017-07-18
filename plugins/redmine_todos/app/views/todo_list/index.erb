@@ -1,0 +1,280 @@
+<% content_for :header_tags do %>
+    <%= javascript_include_tag :"angular.min.js", :plugin => 'redmine_todos' %>
+    <%= javascript_include_tag :"angular.minErr.js", :plugin => 'redmine_todos' %>
+    <%= javascript_include_tag :"angular-resource.min.js", :plugin => 'redmine_todos' %>
+    <%= javascript_include_tag :"angular-ui.sortable.js", :plugin => 'redmine_todos' %>
+    <%= javascript_include_tag :"angular-ui.date.js", :plugin => 'redmine_todos' %>
+    <!--<%= javascript_include_tag :"jquery-ui.sortable.js", :plugin => 'redmine_todos' %>-->
+    <%= javascript_include_tag :"jquery.textarea.expander.js", :plugin => 'redmine_todos' %>
+    <%= javascript_include_tag :todos, :plugin => 'redmine_todos' %>
+    <%= stylesheet_link_tag :todos, :plugin => 'redmine_todos' %>
+<% end %>
+
+<script type="text/ng-template" id="todoResourceEditForm.html">
+  <article ng-show="isActive" ng-class="elementClass+(withCheckbox?' withCheckbox':'')">
+
+    <form ng-submit="save()">
+        <header>
+            <input type="checkbox" disabled="true" ng-show="withCheckbox" />
+            <textarea class="newEntry"
+                    placeholder="{{ placeholder }}"
+                    maxlength="255"
+                    ng-enter="save()"
+                    ng-model="getResource().subject_new"
+                    ng-focus="isActive"
+                    ng-elastic></textarea>
+            <span ng-if="withDueAssigneePill">
+                <due-assignee-pill todo-item="getResource()" for-new-todo="true" />
+            </span>
+            <span ng-if="withPadLock">
+                <span class="padlock widget" ng-class="{active: getResource().is_private}" ng-click="getResource().is_private = !getResource().is_private"></span>
+            </span>
+        </header>
+
+      <footer>
+        <span ng-hide="isInProgress || todoResource.isError">
+            <button>{{ labelSaveChanges }}</button>
+            <%= l(:label_or) %>&nbsp;
+            <span class="a-like" ng-click="cancel()">{{ labelCancel || <%= l(:label_cancel).to_json %> }}</span>
+        </span>
+
+        <span ng-show="isInProgress" class="indicator">
+          Loading...
+        </span>
+        <span ng-show="isError">
+            {{ errorMessage || 'Server returned an error, check console for more information.' }}
+        </span>
+      </footer>
+    </form>
+  </article>
+</script>
+
+<script type="text/ng-template" id="dueAssigneePill.html">
+    <div class="pill" click-outside="isFormVisible=false">
+      <span class="details" ng-class="(isFormVisible || saveInProgress ? ' active' : '')+(todoItem.due_date || todoItem.is_private || assignedToName() ? ' hasData' : ' empty')">
+        <span ng-hide="saveInProgress" ng-click="hasPerm('update_todos') ? (isFormVisible = !isFormVisible) : false">
+            <span ng-show="todoItem.is_private" class="padlock"></span>
+            <span ng-show="todoItem.due_date">{{ todoItem.due_date|date:"dd-MM-yyyy" }}</span>
+            <span ng-show="!todoItem.due_date && !assignedToName()">{{ Translator.trans("unassigned") }}</span>
+            <span ng-show="todoItem.due_date && assignedToName()">·</span>
+            <span ng-show="assignedToName()">{{ assignedToName() }}</span>
+        </span>
+        <span ng-show="saveInProgress" class="indicator">
+          Loading...
+        </span>
+      </span>
+
+      <div class="form" ng-show="isFormVisible" ng-escape="isFormVisible = false">
+        <section class="assignee">
+          <b>{{ Translator.trans("assign_this_todo_to") }}:</b>
+          <select ng-options="c.id as c.name for c in UsersManager.getOptions()" ng-model="todoItem.assigned_to_id_new"></select>
+        </section>
+
+        <section class="due">
+          <b class="set-due">{{ Translator.trans("set_due_date") }}:</b>
+          <div ui-date="dateOptions" name="DateOfBirth" ng-model="todoItem.due_date_new" ui-date-format="yy-mm-dd"></div>
+          <span class="a-like nodue" ng-click="todoItem.due_date_new = null">{{ Translator.trans("no_due_date") }}</span>
+        </section>
+
+        <section class="isPrivate">
+          <b>
+            <input type="checkbox" ng-model="todoItem.is_private_new" id="is_private_{{ todoItem.id }}" />
+            <label ng-click="todoItem.is_private_new = !todoItem.is_private_new">{{ Translator.trans("label_make_this_todo_private") }}</label>
+          </b>
+        </section>
+
+        <div class="pointer top left"><div></div></div>
+      </div>
+    </div>
+</script>
+
+<script>
+    window.user = {
+        id: <%=User.current.id.to_json.html_safe%>,
+        name: <%="#{User.current.firstname} #{User.current.lastname}".to_json.html_safe%>
+    };
+    window.translations = {
+        me: <%=l(:label_me).to_json.html_safe%>,
+        unassigned: <%=l(:label_unassigned).to_json.html_safe%>,
+        assign_this_todo_to: <%=l(:label_assign_this_todo_to).to_json.html_safe%>,
+        set_due_date: <%=l(:label_set_due_date).to_json.html_safe%>,
+        no_due_date: <%=l(:label_no_due_date).to_json.html_safe%>,
+        completed_at: <%=l(:label_completed_at).to_json.html_safe%>,
+        label_ajax_error: <%=l(:label_ajax_error).to_json.html_safe%>,
+        label_make_this_todo_private: <%=l(:label_make_this_todo_private).to_json.html_safe%>
+    };
+    window.assignable_users = <%=@assignable_users_json.html_safe%>;
+    window.permissions = {
+        create_todo_lists: <%=User.current.allowed_to? :create_todo_lists, @project%>,
+        update_todo_lists: <%=User.current.allowed_to? :update_todo_lists, @project%>,
+        delete_todo_lists: <%=User.current.allowed_to? :delete_todo_lists, @project%>,
+
+        create_todos: <%=User.current.allowed_to? :create_todos, @project%>,
+        update_todos: <%=User.current.allowed_to? :update_todos, @project%>,
+        delete_todos: <%=User.current.allowed_to? :delete_todos, @project%>
+    };
+    window.completed_todo_status = <%=@settings[:completed_todo_status].to_json.html_safe%>;
+    window.uncompleted_todo_status = <%=@settings[:uncompleted_todo_status].to_json.html_safe%>;
+    window.comments_nbs = <%=@comments_nbs.to_json.html_safe%>
+    window.routing = {
+        show_issue: '<%= url_for :controller => 'issues', :action => 'show', :id => ':issue_id' %>',
+
+        store_order:        '<%= url_for :controller => 'todo_list', :action => 'save_order' %>',
+        endpoint_todo_list: '<%= url_for :controller => 'todo_list', :action => 'update', :id => ":id" %>',
+        endpoint_todo_item: '<%= url_for :controller => 'todo_item', :action => 'update', :id => ":id" %>',
+        toggle_todo:        '<%= url_for :controller => 'todo_item', :action => 'toggle', :id => ":id" %>'
+    };
+    window.todoLists = <%=@todo_lists_json.html_safe %>;
+    window.recentlyCompleted = <%=@recently_completed_json.html_safe %>;
+    window.csrfToken = jQuery('meta[name="csrf-token"]').attr("content");
+    window.todoResourceEditFormTemplate = jQuery('script[id="todoResourceEditForm.html"]').html();
+    window.dueAssigneePillTemplate = jQuery('script[id="dueAssigneePill.html"]').html();
+</script>
+
+<div ng-app="redmine_todos" ng-controller="TodoListController" id="todos_container" ng-cloak>
+    <header>
+      <h3><%= l(:label_todo_list_plural) %></h3>
+      <span class="action pill a-like"
+            ng-hide="lists.prospect.state().formVisible"
+            ng-click="setState('ducktypingTodoList')">
+        <%= l(:label_add_todo_list) %>
+      </span>
+      <div class="actions" ng-show="hasAnyPermission('create_todo_lists') && isConfigured()">
+        <article class="newTodoListForm">
+            <todo-resource-edit-form
+                placeholder='<%= l(:label_new_todo_list_input_placeholder).to_json %>'
+                label-save-changes='<%= l(:label_save_new_list).to_json %>'
+                resource="prospects.todoList"
+
+                with-pad-lock="1"
+                is-active="ducktypingTodoList"
+                is-in-progress="saveInProgress"
+                is-error="saveError"
+                error-message="errorMessage"
+                save-callback="createTodoList"></todo-resource-edit-form>
+        </article>
+        <ol class="completed"> </ol>
+      </div>
+    </header>
+
+    <div ng-hide="isConfigured()" class="content">
+      <%= l(:label_configure_plugin) %>
+    </div>
+
+    <div ng-hide="todoLists.data.length || ducktypingTodoList || !isConfigured()" class="content">
+      <%= l(:label_add_first_todo_list) %>
+    </div>
+
+    <ol class="todo_lists" ui-sortable="sortableOptionsTodoList" ng-model="todoLists.data" ng-show="todoLists.data.length && isConfigured()">
+        <li class="todo_list" ng-repeat="todoList in todoLists.data track by $index">
+            <header>
+                <div class="asideContainer">
+                    <aside ng-show="hasAnyPermission('update_todo_lists', 'delete_todo_lists') && deleteTodoList != todoList.id">
+                      <span ng-click="deleteTodoList(todoList)" class="delete a-like" ng-show="hasAnyPermission('delete_todo_lists')"><%= l(:label_delete) %></span>
+                      <span ng-click="setState('editingTodoList', todoList.id)" class="edit a-like" ng-show="hasAnyPermission('update_todo_lists')"><%= l(:label_edit) %></span>
+                    </aside>
+                    <aside ng-show="deletingTodoList === todoList.id" class="visible indicator">
+                      Loading...
+                    </aside>
+                </div>
+
+                <span ng-hide="editingTodoList == todoList.id">
+                    <h3>
+                      <a href="?list_id={{ todoList.id }}">{{ todoList.subject }}</a>
+                      <span class="padlock" ng-if="todoList.is_private"></span>
+                    </h3>
+                </span>
+
+                <todo-resource-edit-form
+                    label-save-changes='<%= l(:label_save_changes).to_json %>'
+                    resource="todoList"
+
+                    with-pad-lock="1"
+                    is-active="editingTodoList == todoList.id"
+                    is-in-progress="saveInProgress"
+                    is-error="saveError"
+                    error-message="errorMessage"
+                    on-cancel="setState('editingTodoItem', false)"
+                    save-callback="updateTodoList"></todo-resource-edit-form>
+            </header>
+            <article class="todo_list">
+                <ol ui-sortable="sortableOptionsTodoItem" ng-model="todoList.todo_items">
+                    <li ng-repeat="todoItem in todoList.todo_items | filter:isTodoCompletedFactory(false) track by $index">
+                        <div class="asideContainer">
+                            <aside ng-show="hasAnyPermission('update_todos', 'delete_todos')">
+                              <span ng-click="deleteTodo(todoItem)" class="delete a-like" ng-show="hasAnyPermission('delete_todos')"><%= l(:label_delete) %></span>
+                              <span ng-click="setState('editingTodoItem', todoItem.id)" class="edit a-like" ng-show="hasAnyPermission('update_todos')"><%= l(:label_edit) %></span>
+                            </aside>
+                            <aside ng-show="deletingTodoItem === todoItem.id" class="visible indicator">
+                              Loading...
+                            </aside>
+                        </div>
+
+                        <span ng-hide="editingTodoItem == todoItem.id">
+                            <input type="checkbox" ng-click="toggleTodoItem(todoItem)" ng-model="todoItem.completed" ng-disabled="{{ !permissions.update_todos }}" />
+
+                            <div class="todoContents">
+                                <a href="{{ routes.show_issue|resolve:{':issue_id': todoItem.issue_id} }}" ng-hide="todoItem.editMode.formVisible">
+                                  <!--[#{{ todoItem.id }}]-->
+                                  {{ todoItem.subject }}
+                                </a>
+                                <a class="pill" ng-show="todoItem.commentsNb" href="{{ routes.show_issue|resolve:{':issue_id': todoItem.issue_id} }}"><span class="details hasData"><span>{{ todoItem.commentsNb }} comment{{ todoItem.commentsNb>1?'s':'' }}</span></span></a>
+                                <due-assignee-pill todo-item="todoItem"></due-assignee-pill>
+                            </div>
+                        </span>
+
+
+                        <todo-resource-edit-form
+                            label-save-changes='<%= l(:label_save_changes).to_json %>'
+                            with-checkbox="true"
+                            resource="todoItem"
+
+                            is-active="editingTodoItem == todoItem.id"
+                            is-in-progress="saveInProgress"
+                            is-error="saveError"
+                            error-message="errorMessage"
+                            on-cancel="setState('editingTodoItem', false)"
+                            save-callback="updateTodo"></todo-resource-edit-form>
+
+                        <!--<a class="pill assignee inactive" href="#">Adam Zieliński</a>
+                        <a class="pill comments" href="#">13 <%= l(:label_comments_nb) %></a>-->
+                    </li>
+                </ol>
+
+                  <footer ng-show="hasAnyPermission('create_todos')">
+                    <span class="a-like add" ng-click="setState('ducktypingTodoItem', todoList.id)" ng-hide="ducktypingTodoItem === todoList.id"><%= l(:label_add_a_todo) %></span>
+
+                    <todo-resource-edit-form
+                        placeholder='<%= l(:label_add_new_todo_placeholder).to_json %>'
+                        label-save-changes='<%= l(:label_add_this_todo).to_json %>'
+                        label-cancel='<%= l(:label_done_adding_todos).to_json %>'
+                        with-checkbox="true"
+                        with-due-assignee-pill="true"
+                        resource="prospects.todoItem"
+
+                        is-active="ducktypingTodoItem === todoList.id"
+                        is-in-progress="saveInProgress"
+                        is-error="saveError"
+                        error-message="errorMessage"
+                        on-cancel="setState('ducktypingTodoItem', false)"
+                        save-callback="createTodo"></todo-resource-edit-form>
+                  </footer>
+
+                  <ol class="completed">
+                    <li ng-repeat="todoItem in todoList.todo_items | filter:isTodoCompletedFactory(true) | orderBy:'completed_at':true | limitTo:2 track by $index">
+                      <input type="checkbox" ng-click="toggleTodoItem(todoItem)" ng-model="todoItem.completed" />
+
+                      <a href="{{ routes.show_issue|resolve:{':issue_id': todoItem.issue_id} }}" ng-hide="todoItem.editMode.formVisible">
+                        <!--[#{{ todoItem.id }}]-->
+                        {{ todoItem.subject }}
+                      </a>
+                      ({{ Translator.trans('completed_at') }} {{ todoItem.completed_at|date:"dd-MM-yyyy HH:mm" }})
+                    </li>
+                  </ol>
+            </article>
+        </li>
+    </ol>
+</div>
+
+
+
